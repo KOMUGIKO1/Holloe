@@ -53,17 +53,27 @@ body::-webkit-scrollbar {
     display: block;
     width: 35vw;
 }
-.classNameInp {
+.classNameBtn {
     display: inline-block;
-    width: 300px;
+    width: 100px;
     height: 40px;
     padding: 2px 20px 2px 20px;
     margin: 15px 0;
-    font: normal 15px/1 "Arial";
-    border: 3px solid #000;
-    border-radius: 30px;
-    cursor: text;
+    font: italic 20px/1 "Arial";
+    border: 2px solid #000;
+    border-radius: 5px;
+    background: #fff;
+    cursor: pointer;
 }
+/* .grade1 {
+    background: #c6ffe2;
+}
+.grade2 {
+    background: #ffdbdb;
+}
+.grade3 {
+    background: #dbffff;
+} */
 #joinBtn {
     display: inline-block;
     width: 100px;
@@ -75,6 +85,11 @@ body::-webkit-scrollbar {
     background: #fff;
     cursor: pointer;
 }
+.classNameBtn:hover, #joinBtn:hover{
+    color: #fff;
+    background: #000;
+}
+
 #closeBtn {
     display: inline-block;
     width: 100px;

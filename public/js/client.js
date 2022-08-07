@@ -20,6 +20,20 @@ const g_socket = io.connect();
 
 
 // ↓↓↓UIから呼ばれる関数↓↓↓
+let g_selectedClass;
+// classNameボタン押下
+function onClassNameBtnClicked(e) {
+    if( g_selectedClass )
+    {
+        g_selectedClass.style.background = "#fff";
+        g_selectedClass.style.color = "#000";
+    }
+    e.style.background = "#000";
+    e.style.color = "#fff";
+    g_selectedClass = e;
+    // e.style.textDecoration = "line-through";
+    // e.disabled = true;
+}
 
 // Joinボタン押下
 function onJoinBtnClicked()
