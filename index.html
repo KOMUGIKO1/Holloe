@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <base target="_blank">
+        <title>CastBox for school</title>
+        <link rel="icon" type="image/x-icon" href="public/img/logo_removebg_notitile.png">
+        <link rel="stylesheet" href="cab.css">
+    </head>
+    <body>
+        <div id="joinScreen">
+            <ul id="creditBar">
+                <li><img id="companyLogo" src="public/img/logo_notitile.png" /></li>
+                <li><span id="companyName">OyoLamp<span id="creditText">Produced by 2712</span></span></li>
+            </ul>
+            <div id="formBox" class="flex_center">
+                <img id="AppLogo" src="public/img/logo_CastBoxForSchool.png" />
+                <input type="text" id="userNameInp" placeholder="Your name">
+                <button id="joinBtn" onclick="onJoinBtnClicked()">GO</button>
+            </div>
+        </div>
+        <div id="talkScreen">
+            <div id="remoteVideoBox">
+                <video id="video_remote" autoplay></video>
+                <audio id="audio_remote" autoplay></audio>
+            </div>
+            <div id="menuBar" class="flex_center">
+            <div>
+                <button id="offerBtn" onclick="onOfferBtnClicked()">Offer</button>
+                <button id="quitBtn" onclick="onQuitBtnClicked()">Quit</button>
+                <label id="camLabel" for="camBtn">CAM</label>
+                    <input type="checkbox" id="camBtn" onclick="onCamMicBtnClicked()">
+                <label id="micLabel" for="micBtn">MIC</label>
+                    <input type="checkbox" id="micBtn" onclick="onCamMicBtnClicked()">
+                <!-- <button id="closeBtn" onclick="onCloseBtnClicked()"></button> -->
+            </div>
+            </div>
+            <video id="localVideo" autoplay playsinline></video>
+        <div id="msgBox"></div>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="public//js/client.js"></script>
+    </body>
+</html>
