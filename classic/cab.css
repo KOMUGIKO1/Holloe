@@ -1,0 +1,36 @@
+body {
+    font-family: "SF Pro JP", "SF Pro Text", "Apple TP", "Myriad Set Pro", "SF Pro Icons", "Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3", メイリオ, Meiryo, "ＭＳ Ｐゴシック", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0; /*To fix up body.*/
+    width: 100%;
+    background-color: #eee;
+}
+body::-webkit-scrollbar {
+    display: none;
+}
+/* .flex_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+#openCam {
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 3vh;
+    left: 5vh;
+    font: bold 30px/1 "SF Pro JP";
+    border: solid 5px tomato;
+    border-radius: 100%;
+    background: crimson;
+    z-index: 2;
+}
+#videoBox {
+    height: 100vh;
+    background: dimgray;
+}
+#usersVideo {
+    width: 100%;
+    clip-path: inset( 0 0 25% 0 round 15px);
+    z-index: -1;
+    transform: scaleX(-1);
+}

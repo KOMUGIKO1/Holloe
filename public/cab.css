@@ -1,0 +1,118 @@
+html {
+    height: 100%;
+}
+body {
+    font-family: 
+        /* "SF Pro JP", "SF Pro Text",  */
+        "Arial", "Apple TP", "Myriad Set Pro", "SF Pro Icons", "Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3", メイリオ, Meiryo, "ＭＳ Ｐゴシック", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+body::-webkit-scrollbar {
+    display: none;
+}
+.flex_center {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+#joinScreen {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 10;
+}
+#logo {
+    display: block;
+    width: 40vw;
+}
+#userNameInp {
+    display: inline-block;
+    width: 300px;
+    height: 40px;
+    padding: 2px 20px 2px 20px;
+    margin: 30px 0;
+    font: normal 15px/1 "Arial";
+    border: 3px solid #000;
+    border-radius: 30px;
+    cursor: text;
+}
+#joinBtn {
+    display: inline-block;
+    width: 100px;
+    padding: 10px 0;
+    margin: 30px 0;
+    font: normal 25px/1 "Arial";
+    border: 3px solid #000;
+    border-radius: 30px;
+    background: #fff;
+    cursor: pointer;
+}
+#closeBtn {
+    display: inline-block;
+    width: 100px;
+    padding: 10px 0;
+    margin: 30px 0;
+    font: normal 25px/1 "Arial";
+    border: 3px solid #000;
+    border-radius: 30px;
+    background: #fff;
+    cursor: pointer;
+    z-index: 3;
+}
+#talkScreen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    background: #fff;
+}
+#menuBar {
+    /* display: block; */
+    background: #444;
+    z-index: 2;
+}
+#camLabel, #micLabel {
+    display: inline-block;
+    width: 100px;
+    padding: 5px 0;
+    margin: 10px 5px;
+    text-align: center;
+    font: normal 25px/1 "Arial";
+    border: 3px solid #000;
+    border-radius: 30px;
+    background: #fff;
+    cursor: pointer;
+}
+#offerBtn, #quitBtn {
+    display: inline-block;
+    width: 100px;
+    padding: 5px 0;
+    margin: 10px 5px;
+    font: normal 25px/1 "Arial";
+    border: 3px solid #000;
+    border-radius: 30px;
+    background: #fff;
+    cursor: pointer;
+}
+#camBtn, #micBtn {
+    display: none;
+}
+#remoteVideoBox {
+    height: 100%;
+    border: 3px double #000;
+}
+#video_remote {
+    width: 100%;
+    clip-path: inset( 0 0 25% 0 round 15px);
+    z-index: -1;
+    transform: scaleX(-1);
+}
+#localVideo {
+    width: 50%;
+    clip-path: inset( 0 0 25% 0 round 15px);
+    z-index: -1;
+    transform: scaleX(-1);
+}
