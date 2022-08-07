@@ -3,15 +3,21 @@
     <head>
         <meta charset="utf-8">
         <base target="_blank">
-        <title>Holle</title>
+        <title>CastBox for school</title>
         <link rel="icon" type="image/x-icon" href="img/logo_removebg_notitile.png">
         <link rel="stylesheet" href="cab.css">
     </head>
     <body>
-        <div id="joinScreen" class="flex_center"> 
-            <img id="logo" src="img/logo.png" />
-            <input type="text" id="userNameInp" placeholder="Your name">
-            <button id="joinBtn" onclick="onJoinBtnClicked()">GO</button>
+        <div id="joinScreen">
+            <ul id="creditBar">
+                <li><img id="companyLogo" src="img/logo_notitile.png" /></li>
+                <li><span id="companyName">OyoLamp<span id="creditText">Produced by 2712</span></span></li>
+            </ul>
+            <div id="formBox" class="flex_center">
+                <img id="AppLogo" src="img/logo_CastBoxForSchool.png" />
+                <input type="text" id="userNameInp" placeholder="Your name">
+                <button id="joinBtn" onclick="onJoinBtnClicked()">GO</button>
+            </div>
         </div>
         <div id="talkScreen">
             <div id="remoteVideoBox">

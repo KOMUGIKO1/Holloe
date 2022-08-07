@@ -24,16 +24,41 @@ body::-webkit-scrollbar {
     background: #fff;
     z-index: 10;
 }
-#logo {
-    display: block;
-    width: 40vw;
+#creditBar {
+    display: flex;
+    width: 100vw;
+    padding: 0;
+    align-items: center;
+    list-style: none;
 }
-#userNameInp {
+#companyLogo {
+    display: inline;
+    width: 100px;
+}
+#companyName {
+    display: inline;
+    font: bold 20px/1 "Arial";
+    margin: 0;
+    padding: 5px 20px 5px 0;
+}
+#creditText {
+    display: inline;
+    padding: 0 20px;
+    font: italic 15px/1 "Arial";
+}
+#formBox {
+    
+}
+#AppLogo {
+    display: block;
+    width: 35vw;
+}
+.classNameInp {
     display: inline-block;
     width: 300px;
     height: 40px;
     padding: 2px 20px 2px 20px;
-    margin: 30px 0;
+    margin: 15px 0;
     font: normal 15px/1 "Arial";
     border: 3px solid #000;
     border-radius: 30px;
