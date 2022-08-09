@@ -15,6 +15,7 @@
             </ul>
             <div id="formBox" class="flex_center">
                 <img id="AppLogo" src="img/logo_CastBoxForSchool.png" />
+                <button class="classNameBtn Host" onclick="onClassNameBtnClicked(this)">Host</button>
                 <div class="classSlecter">
                     <button class="classNameBtn grade3" onclick="onClassNameBtnClicked(this)">3-1</button>
                     <button class="classNameBtn grade3" onclick="onClassNameBtnClicked(this)">3-2</button>
@@ -42,27 +43,26 @@
                     <button class="classNameBtn grade1" onclick="onClassNameBtnClicked(this)">1-6</button>
                     <button class="classNameBtn grade1" onclick="onClassNameBtnClicked(this)">1-7</button>
                 </div>
-                <!-- <input type="text" class="classNameInp" placeholder="Your name"> -->
-                <button id="joinBtn" onclick="onJoinBtnClicked()">GO</button>
+                <button id="joinBtn" onclick="onJoinBtnClicked()" disabled>GO</button>
             </div>
         </div>
         <div id="talkScreen">
             <div id="remoteVideoBox">
-                <video id="video_remote" autoplay></video>
-                <audio id="audio_remote" autoplay></audio>
+                <video id="hostVideo" autoplay playsinline></video>
+                <audio id="hostAudio" autoplay></audio>
+                <!-- <video id="video_host" autoplay></video>
+                <audio id="audio_remote" autoplay></audio> -->
             </div>
             <div id="menuBar" class="flex_center">
-            <div>
-                <button id="offerBtn" onclick="onOfferBtnClicked()">Offer</button>
-                <button id="quitBtn" onclick="onQuitBtnClicked()">Quit</button>
-                <label id="camLabel" for="camBtn">CAM</label>
-                    <input type="checkbox" id="camBtn" onclick="onCamMicBtnClicked()">
-                <label id="micLabel" for="micBtn">MIC</label>
-                    <input type="checkbox" id="micBtn" onclick="onCamMicBtnClicked()">
-                <!-- <button id="closeBtn" onclick="onCloseBtnClicked()"></button> -->
+                <div>
+                    <button id="quitBtn" onclick="onQuitBtnClicked()">Quit</button>
+                    <label id="camLabel" for="camBtn">CAM</label>
+                        <input type="checkbox" id="camBtn" onclick="onCamMicBtnClicked()">
+                    <label id="micLabel" for="micBtn">MIC</label>
+                        <input type="checkbox" id="micBtn" onclick="onCamMicBtnClicked()">
+                    <button id="offerBtn" onclick="onOfferBtnClicked()" disabled>Cast</button>
+                </div>
             </div>
-            </div>
-            <video id="localVideo" autoplay playsinline></video>
         <div id="msgBox"></div>
         </div>
         <script src="/socket.io/socket.io.js"></script>

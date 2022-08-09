@@ -5,22 +5,27 @@
 const g_elementDivJoinScreen = document.getElementById( "joinScreen" );
 const g_elementDivChatScreen = document.getElementById( "talkScreen" );
 
+const g_elementButtonJoin = document.getElementById( "joinBtn" );
 const g_elementMenuBar = document.getElementById( "menuBar" );
 const g_elementCheckboxCamera = document.getElementById( "camBtn" );
 const g_elementCheckboxMicrophone = document.getElementById( "micBtn" );
+const g_elementLabelCamera = document.getElementById( "camLabel" );
+const g_elementLabelMicrophone = document.getElementById( "micLabel" );
+const g_elementButtonQuit = document.getElementById( "quitBtn" );
+const g_elementButtonOffer = document.getElementById( "offerBtn" );
 
-const g_elementVideolocal = document.getElementById( "localVideo" );
-const g_elementVideoRemote = document.getElementById( "video_remote" );
-const g_elementAudioRemote = document.getElementById( "audio_remote" );
+const g_elementVideo_host = document.getElementById( "hostVideo" );
+const g_elementAudio_host = document.getElementById( "hostAudio" );
 
 let g_rtcPeerConnection = null;
+let g_selectedClass = null;
+let g_isHost = false;
 
 // クライアントからサーバーへの接続要求
 const g_socket = io.connect();
 
 
 // ↓↓↓UIから呼ばれる関数↓↓↓
-let g_selectedClass;
 // classNameボタン押下
 function onClassNameBtnClicked(e) {
     if( g_selectedClass )
@@ -31,8 +36,7 @@ function onClassNameBtnClicked(e) {
     e.style.background = "#000";
     e.style.color = "#fff";
     g_selectedClass = e;
-    // e.style.textDecoration = "line-through";
-    // e.disabled = true;
+    g_elementButtonJoin.disabled = false;
 }
 
 // Joinボタン押下
@@ -40,91 +44,105 @@ function onJoinBtnClicked()
 {
     g_elementDivJoinScreen.style.display = "none";
     g_elementDivChatScreen.style.display = "block";
+    if ( g_selectedClass.innerHTML === "Host" )
+    {
+        g_elementLabelCamera.style.display = "inline-block";
+        g_elementLabelMicrophone.style.display = "inline-block";
+        g_elementButtonOffer.style.display = "inline-block";
+        g_isHost = true;
+    }
+    g_selectedClass.style.textDecoration = "line-through";
+    g_selectedClass.disabled = true;
 }
 // カメラ / マイクボタン押下
 function onCamMicBtnClicked()
 {
-    // これまでの状態
-    let trackCamera_old = null;
-    let trackMicrophone_old = null;
-    let bCamera_old = false;
-    let bMicrophone_old = false;
-    let stream = g_elementVideolocal.srcObject;
-    if( stream )
-    {
-        trackCamera_old = stream.getVideoTracks()[0];
+    if ( g_isHost ) {
+        // これまでの状態
+        let trackCamera_old = null;
+        let trackMicrophone_old = null;
+        let bCamera_old = false;
+        let bMicrophone_old = false;
+        let stream = g_elementVideo_host.srcObject;
+        if( stream )
+        {
+            trackCamera_old = stream.getVideoTracks()[0];
+            if( trackCamera_old )
+            {
+                bCamera_old = true;
+            }
+            trackMicrophone_old = stream.getAudioTracks()[0];
+            if( trackMicrophone_old )
+            {
+                bMicrophone_old = true;
+            }
+        }
+
+        // 今後の状態
+        let bCamera_new = false;
+        if( g_elementCheckboxCamera.checked )
+        {
+            bCamera_new = true;
+        }
+        let bMicrophone_new = false;
+        if( g_elementCheckboxMicrophone.checked )
+        {
+            bMicrophone_new = true;
+        }
+
+        // 状態変化
+        console.log( "Camera :  %s => %s", bCamera_old, bCamera_new );
+        console.log( "Microphone : %s => %s", bMicrophone_old, bMicrophone_new );
+
+        if( bCamera_old === bCamera_new && bMicrophone_old === bMicrophone_new )
+        {   // チェックボックスの状態の変化なし
+            return;
+        }
+
+        // 古いメディアストリームのトラックの停止（トラックの停止をせず、HTML要素のstreamの解除だけではカメラは停止しない（カメラ動作LEDは点いたまま））
         if( trackCamera_old )
         {
-            bCamera_old = true;
+            console.log( "Call : trackCamera_old.stop()" );
+            trackCamera_old.stop();
         }
-        trackMicrophone_old = stream.getAudioTracks()[0];
         if( trackMicrophone_old )
         {
-            bMicrophone_old = true;
+            console.log( "Call : trackMicrophone_old.stop()" );
+            trackMicrophone_old.stop();
         }
-    }
+        // HTML要素のメディアストリームの解除
+        console.log( "Call : setStreamToElement( hostVideo, null )" );
+        setStreamToElement( g_elementVideo_host, null );
 
-    // 今後の状態
-    let bCamera_new = false;
-    if( g_elementCheckboxCamera.checked )
-    {
-        bCamera_new = true;
-    }
-    let bMicrophone_new = false;
-    if( g_elementCheckboxMicrophone.checked )
-    {
-        bMicrophone_new = true;
-    }
-
-    // 状態変化
-    console.log( "Camera :  %s => %s", bCamera_old, bCamera_new );
-    console.log( "Microphoneo : %s = %s", bMicrophone_old, bMicrophone_new );
-
-    if( bCamera_old === bCamera_new && bMicrophone_old === bMicrophone_new )
-    {   // チェックボックスの状態の変化なし
-        return;
-    }
-
-    // 古いメディアストリームのトラックの停止（トラックの停止をせず、HTML要素のstreamの解除だけではカメラは停止しない（カメラ動作LEDは点いたまま））
-    if( trackCamera_old )
-    {
-        console.log( "Call : trackCamera_old.stop()" );
-        trackCamera_old.stop();
-    }
-    if( trackMicrophone_old )
-    {
-        console.log( "Call : trackMicrophone_old.stop()" );
-        trackMicrophone_old.stop();
-    }
-    // HTML要素のメディアストリームの解除
-    console.log( "Call : setStreamToElement( Video_Local, null )" );
-    setStreamToElement( g_elementVideolocal, null );
-
-    if( !bCamera_new && !bMicrophone_new )
-    {   // （チェックボックスの状態の変化があり、かつ、）カメラとマイクを両方Offの場合
-        return;
-    }
-
-    // （チェックボックスの状態の変化があり、かつ、）カメラとマイクのどちらかもしくはどちらもOnの場合
-
-    // 自分のメディアストリームを取得する。
-    console.log( "Call : navigator.mediaDevices.getUserMedia( video=%s, audio=%s )", bCamera_new, bMicrophone_new );
-    navigator.mediaDevices.getUserMedia( { video: bCamera_new, audio: bMicrophone_new } )
-        .then( ( stream ) =>
-        {
-            // HTML要素へのメディアストリームの設定
-            console.log( "Call : setStreamToElement( Video_Local, stream )" );
-            setStreamToElement( g_elementVideolocal, stream );
-        } )
-        .catch( ( error ) =>
-        {
-            // メディアストリームの取得に失敗⇒古いメディアストリームのまま。チェックボックスの状態を戻す。
-            console.error( "Error : ", error );
-            alert( "Could not start Camera." );
-            g_elementCheckboxCamera.checked = false;
-            g_elementCheckboxMicrophone.checked = false;
+        if( !bCamera_new && !bMicrophone_new )
+        {   // （チェックボックスの状態の変化があり、かつ、カメラとマイクを両方Offの場合
             return;
-        } );
+        }
+
+        // （チェックボックスの状態の変化があり、かつ、カメラとマイクのどちらかもしくはどちらもOnの場合
+
+        // 自分のメディアストリームを取得する。
+        console.log( "Call : navigator.mediaDevices.getUserMedia( video=%s, audio=%s )", bCamera_new, bMicrophone_new );
+        navigator.mediaDevices.getUserMedia( { video: bCamera_new, audio: bMicrophone_new } )
+            .then( ( stream ) =>
+            {
+                // HTML要素へのメディアストリームの設定
+                console.log( "Call : setStreamToElement( hostVideo, stream )" );
+                setStreamToElement( g_elementVideo_host, stream );
+                console.log( "Call : setStreamToElement( hostAudio, stream )" );
+                setStreamToElement( g_elementAudio_host, stream );
+                g_elementButtonOffer.disabled = false;
+            } )
+            .catch( ( error ) =>
+            {
+                // メディアストリームの取得に失敗⇒古いメディアストリームのまま。チェックボックスの状態を戻す。
+                console.error( "Error : ", error );
+                alert( "Could not start Camera." );
+                g_elementCheckboxCamera.checked = false;
+                g_elementCheckboxMicrophone.checked = false;
+                return;
+            } );
+    }
 }
 
 // Offerボタン押下
@@ -138,7 +156,7 @@ function onOfferBtnClicked()
 
     // RTCPeerConnectionオブジェクトの作成
     console.log( "Call : createPeerConnection()" );
-    let rtcPeerConnection = createPeerConnection( g_elementVideolocal.srcObject );
+    let rtcPeerConnection = createPeerConnection( g_elementVideo_host.srcObject );
     g_rtcPeerConnection = rtcPeerConnection;    // グローバル変数に設定
 
     // OfferSDPの作成
@@ -194,9 +212,6 @@ g_socket.on(
 
         if( "offer" === objData.type )
         {
-            // onclickButton_SetOfferSDPandCreateAnswerSDP()と同様の処理
-            // 設定するOffserSDPとして、テキストエリアのデータではなく、受信したデータを使用する。
-
             if( g_rtcPeerConnection )
             {   // 既にコネクションオブジェクトあり
                 alert( "Connection object already exists." );
@@ -205,7 +220,7 @@ g_socket.on(
 
             // RTCPeerConnectionオブジェクトの作成
             console.log( "Call : createPeerConnection()" );
-            let rtcPeerConnection = createPeerConnection( g_elementVideolocal.srcObject );
+            let rtcPeerConnection = createPeerConnection( g_elementVideo_host.srcObject );
             g_rtcPeerConnection = rtcPeerConnection;    // グローバル変数に設定
 
             // OfferSDPの設定とAnswerSDPの作成
@@ -371,12 +386,12 @@ function setupRTCPeerConnectionEventHandler( rtcPeerConnection )
         if( "video" === track.kind )
         {
             console.log( "Call : setStreamToElement( Video_Remote, stream )" );
-            setStreamToElement( g_elementVideoRemote, stream );
+            setStreamToElement( g_elementVideo_host, stream );
         }
         else if( "audio" === track.kind )
         {
             console.log( "Call : setStreamToElement( Audio_Remote, stream )" );
-            setStreamToElement( g_elementAudioRemote, stream );
+            setStreamToElement( g_elementAudio_host, stream );
         }
         else
         {
@@ -452,10 +467,10 @@ function endPeerConnection( rtcPeerConnection )
 {
     // リモート映像の停止
     console.log( "Call : setStreamToElement( Video_Remote, null )" );
-    setStreamToElement( g_elementVideoRemote, null );
+    setStreamToElement( g_elementVideo_host, null );
     // リモート音声の停止
     console.log( "Call : setStreamToElement( Audio_Remote, null )" );
-    setStreamToElement( g_elementAudioRemote, null );
+    setStreamToElement( g_elementAudio_host, null );
 
     // グローバル変数のクリア
     g_rtcPeerConnection = null;
@@ -485,6 +500,11 @@ function setStreamToElement( elementMedia, stream )
     }
     else if( "AUDIO" === elementMedia.tagName )
     {   // AUDIO：ボリュームあり、ミュートでない
+        if ( g_isHost )
+        {
+            elementMedia.volume = 0.0;
+            elementMedia.muted = true;
+        }
         elementMedia.volume = 1.0;
         elementMedia.muted = false;
     }
