@@ -90,6 +90,9 @@ body::-webkit-scrollbar {
     align-items: center;
     background: #fff;
 }
+#menuBar {
+    /* background: #960000; */
+}
 #camLabel, #micLabel, #offerBtn {
     display: none;
     width: 100px;
@@ -122,9 +125,10 @@ body::-webkit-scrollbar {
 }
 
 #remoteVideoBox {
-    height: 100%;
-    /* border: 3px solid #000; */
+    height: 75vh;
+    overflow: hidden;
 }
+
 #hostVideo {
     width: 100%;
     clip-path: inset( 0 0 25% 0 round 15px);

@@ -50,8 +50,6 @@
             <div id="remoteVideoBox">
                 <video id="hostVideo" autoplay playsinline></video>
                 <audio id="hostAudio" autoplay></audio>
-                <!-- <video id="video_host" autoplay></video>
-                <audio id="audio_remote" autoplay></audio> -->
             </div>
             <div id="menuBar" class="flex_center">
                 <div>
@@ -60,10 +58,16 @@
                         <input type="checkbox" id="camBtn" onclick="onCamMicBtnClicked()">
                     <label id="micLabel" for="micBtn">MIC</label>
                         <input type="checkbox" id="micBtn" onclick="onCamMicBtnClicked()">
-                    <button id="offerBtn" onclick="onOfferBtnClicked()" disabled>Cast</button>
+                    <!-- <button id="offerBtn" onclick="onOfferBtnClicked()" disabled>Cast</button> -->
                 </div>
             </div>
-        <div id="msgBox"></div>
+            <div id="msgBox">
+                <input type="text" id="text_classname" readonly="readonly">
+                <form action="" onsubmit="onsubmitButton_SendMessage(); return false;">
+                    <input type="text" id="text_message_for_send" size="40" /><input type="submit" value="Send message" />
+                </form>
+                <textarea id="textarea_message_received" rows="5" cols="60" readonly="readonly"></textarea>
+            </div>
         </div>
         <script src="/socket.io/socket.io.js"></script>
         <script src="../js/client.js"></script>
